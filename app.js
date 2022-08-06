@@ -1,8 +1,9 @@
 import express from "express";
 import Connect from "./db.js";
-import { addTodo, deleteTodo, homepage, page404, ping } from "./todo.js";
-import { login, signup } from "./userController.js";
+import { addTodo, deleteTodo, editTodo, homepage, page404, ping } from "./todo.js";
+import { clearAll, login, signup } from "./userController.js";
 import cors from 'cors'
+import { authenticate } from "./auth.js";
 
 
 const app = express()
@@ -16,10 +17,13 @@ app.use(cors())
 app.get('/ping', ping)
 app.post('/signup', signup)
 app.post('/login', login)
-app.get('/todo', homepage)
-app.post('/todo', addTodo)
-app.post('/todo/delete', deleteTodo)
+app.get('/todo', authenticate, homepage)
+app.post('/todo/add', authenticate, addTodo)
+app.put('/todo/edit', authenticate, editTodo)
+app.get('/todo/clear-all', clearAll)
+app.delete('/todo/delete/:id',authenticate, deleteTodo)
 app.use('/*', page404)
+
 
 // START
 async function initiateApplication(DB_URI, PORT) {

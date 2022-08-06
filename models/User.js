@@ -8,11 +8,7 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-    },
-    loggedIn: {
-        type: Boolean,
-        default: false
-    }
+    },    
 })
 
 export default mongoose.model("User", userSchema)
